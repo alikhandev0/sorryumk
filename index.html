@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ek zaroori baat 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3EEFB;
+    --card:#FFFFFF;
+    --ink:#3B2A50;
+    --soft:#8A7AA8;
+    --coral:#FF6B8A;
+    --coral-dark:#E94F72;
+    --sun:#FFC94D;
+    --mint:#7BD8B0;
+    --radius:22px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:'Nunito',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  h1,h2,.display{font-family:'Baloo 2','Nunito',system-ui,sans-serif}
+
+  /* ---------- LOADING SCREEN ---------- */
+  #loader{
+    position:fixed;inset:0;z-index:50;
+    background:linear-gradient(160deg,#3B2A50 0%,#5A3E7E 100%);
+    color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:32px;text-align:center;
+    transition:opacity .6s ease, visibility .6s;
+  }
+  #loader.done{opacity:0;visibility:hidden}
+  .loader-emoji{font-size:56px;animation:bounce 1.2s infinite ease-in-out}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .loader-title{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:clamp(24px,6vw,34px);margin:18px 0 6px}
+  #loadMsg{min-height:48px;font-size:16px;color:#D9CBF2;font-weight:600}
+  .bar-wrap{width:min(320px,80vw);height:14px;background:rgba(255,255,255,.18);border-radius:99px;margin:22px auto 10px;overflow:hidden}
+  .bar{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--coral),var(--sun));transition:width .45s ease}
+  #loadPct{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:20px;color:var(--sun)}
+
+  /* ---------- MAIN ---------- */
+  .wrap{
+    max-width:520px;margin:0 auto;
+    padding:36px 20px 80px;
+    display:flex;flex-direction:column;gap:24px;
+  }
+  .hero{text-align:center;padding-top:10px}
+  .hero .big-emoji{font-size:64px;display:inline-block;animation:wiggle 2.4s infinite ease-in-out}
+  @keyframes wiggle{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+  .hero h1{font-size:clamp(30px,8vw,42px);font-weight:800;line-height:1.15;margin-top:10px}
+  .hero h1 span{color:var(--coral)}
+  .hero p{color:var(--soft);font-weight:600;margin-top:6px;font-size:17px}
+
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:24px 20px;
+    box-shadow:0 8px 24px rgba(59,42,80,.10);
+  }
+  .card h2{font-size:21px;font-weight:800;margin-bottom:10px}
+  .card p{font-size:16px;line-height:1.65;color:#5C4A78}
+  .card p + p{margin-top:10px}
+
+  /* ---------- SORRY METER ---------- */
+  .meter-card{text-align:center}
+  .meter-face{font-size:44px;margin:6px 0}
+  .meter-value{
+    font-family:'Baloo 2',sans-serif;font-weight:800;
+    font-size:52px;color:var(--coral);line-height:1;
+  }
+  .meter-value small{font-size:24px}
+  input[type=range]{
+    width:100%;margin:20px 0 8px;appearance:none;-webkit-appearance:none;
+    height:16px;border-radius:99px;
+    background:linear-gradient(90deg,var(--coral) 0%,var(--sun) 100%);
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;
+    width:34px;height:34px;border-radius:50%;
+    background:#fff;border:4px solid var(--coral);
+    box-shadow:0 3px 10px rgba(233,79,114,.4);
+    cursor:grab;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:34px;height:34px;border-radius:50%;
+    background:#fff;border:4px solid var(--coral);
+    box-shadow:0 3px 10px rgba(233,79,114,.4);cursor:grab;
+  }
+  .meter-note{font-size:14px;color:var(--soft);font-weight:600;min-height:22px}
+
+  /* ---------- FORGIVE SECTION ---------- */
+  .forgive{text-align:center}
+  .forgive h2{font-size:26px}
+  .btn-row{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+  .btn{
+    font-family:'Baloo 2',sans-serif;font-weight:700;
+    border:none;border-radius:99px;
+    padding:16px 24px;font-size:18px;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, font-size .3s ease, padding .3s ease;
+    width:100%;
+  }
+  .btn:active{transform:scale(.96)}
+  .btn-yes{
+    background:linear-gradient(135deg,var(--coral),var(--coral-dark));
+    color:#fff;box-shadow:0 6px 18px rgba(233,79,114,.45);
+  }
+  .btn-think{
+    background:#EFE9FB;color:var(--soft);
+  }
+  .btn-yes.grow1{font-size:21px;padding:19px 24px}
+  .btn-yes.grow2{font-size:25px;padding:23px 24px}
+
+  /* ---------- SUCCESS ---------- */
+  #success{
+    display:none;text-align:center;padding:30px 20px;
+  }
+  #success.show{display:block;animation:pop .5s ease}
+  @keyframes pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+  #success .big-emoji{font-size:70px}
+  #success h2{font-size:30px;margin-top:10px}
+  #success p{color:#5C4A78;font-size:17px;margin-top:8px;line-height:1.6}
+
+  #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:40}
+
+  footer{text-align:center;color:var(--soft);font-size:13px;font-weight:600;padding-bottom:20px}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-emoji">📦</div>
+  <div class="loader-title">maafi load ho rahi hai...</div>
+  <div id="loadMsg">shuru kar rahe hain...</div>
+  <div class="bar-wrap"><div class="bar" id="bar"></div></div>
+  <div id="loadPct">0%</div>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<div class="wrap" id="main">
+
+  <div class="hero">
+    <span class="big-emoji">🥺</span>
+    <h1>hi <span id="herName">Dost</span>,<br>mujhse galti hogayi</h1>
+    <p>aur yeh site iska saboot hai k mujhe sach mein bura lag raha hai</p>
+  </div>
+
+  <div class="card">
+    <h2>seedhi baat 💬</h2>
+    <p>yaar I know main ne jo kiya woh theek nahi tha. koi bahana nahi banaunga, bas itna kahunga k mera intention apko hurt karna bilkul nahi tha.</p>
+  </div>
+
+  <!-- SORRY METER -->
+  <div class="card meter-card">
+    <h2>sorry meter 📊</h2>
+    <p style="margin-bottom:4px">main kitna sorry hoon? khud check karlain:</p>
+    <div class="meter-face" id="meterFace">😐</div>
+    <div class="meter-value"><span id="meterNum">50</span><small>%</small></div>
+    <input type="range" id="meter" min="0" max="100" value="50" aria-label="sorry meter">
+    <div class="meter-note" id="meterNote">slider ko kahin bhi le jain...</div>
+  </div>
+
+  <!-- FORGIVE -->
+  <div class="card forgive" id="forgiveCard">
+    <h2>toh... maaf kiya? 🙏</h2>
+    <div class="btn-row">
+      <button class="btn btn-yes" id="btnYes">haan, maaf kiya 😌</button>
+      <button class="btn btn-think" id="btnThink">hmm, sochna paray ga 🤔</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="card" id="success">
+    <span class="big-emoji">🎉</span>
+    <h2>yayyy shukriya!</h2>
+    <p>you are best. dosti officially wapis ON hai 🤝<br>agli icecream treat meri taraf se, pakka wala pakka</p>
+  </div>
+
+  <footer>banayi gayi 100% guilt aur thori si coding se 💜</footer>
+</div>
+
+<script>
+/* ====== EDIT HERE: uska naam likho ====== */
+const HER_NAME = "Dost";
+/* ======================================== */
+
+document.getElementById('herName').textContent = HER_NAME;
+
+/* ---------- LOADING SCREEN ---------- */
+const loadSteps = [
+  [12, "sincerity add ki ja rahi hai..."],
+  [31, "ego delete ho raha hai... (file bari hai 🙄)"],
+  [47, "bahane remove kiye ja rahe hain..."],
+  [68, "guilt compress ho raha nahi... bohat zyada hai"],
+  [86, "extra sorry install ho rahi hai 💜"],
+  [99, "99%... bas thora sa aur..."],
+  [100, "ho gaya! ✅"]
+];
+const bar = document.getElementById('bar');
+const pct = document.getElementById('loadPct');
+const msg = document.getElementById('loadMsg');
+let step = 0;
+function nextStep(){
+  if(step >= loadSteps.length){
+    setTimeout(()=>document.getElementById('loader').classList.add('done'), 500);
+    return;
+  }
+  const [p, t] = loadSteps[step++];
+  bar.style.width = p + '%';
+  pct.textContent = p + '%';
+  msg.textContent = t;
+  setTimeout(nextStep, p === 99 ? 1400 : 800);
+}
+setTimeout(nextStep, 600);
+
+/* ---------- SORRY METER (always snaps to 100) ---------- */
+const meter = document.getElementById('meter');
+const meterNum = document.getElementById('meterNum');
+const meterFace = document.getElementById('meterFace');
+const meterNote = document.getElementById('meterNote');
+let meterTries = 0;
+const meterNotes = [
+  "hmm nahi... yeh meter sirf 100% support karta hai 😅",
+  "phir try karlo, result wahi aayega",
+  "scientifically proven: Ali ki sorry = 100% hamesha",
+  "yeh meter tootne wala nahi, sorry bhi nahi 😌"
+];
+function snapMeter(){
+  meterTries++;
+  let v = 0;
+  const target = 100;
+  const anim = setInterval(()=>{
+    v += 5;
+    if(v >= target){ v = target; clearInterval(anim); }
+    meter.value = v;
+    meterNum.textContent = v;
+    meterFace.textContent = v < 40 ? "😐" : v < 80 ? "🥺" : "😭";
+  }, 15);
+  meterNote.textContent = meterNotes[Math.min(meterTries-1, meterNotes.length-1)];
+}
+meter.addEventListener('change', snapMeter);
+meter.addEventListener('input', ()=>{ meterNum.textContent = meter.value; });
+
+/* ---------- THINK BUTTON (playful, tap-based) ---------- */
+const btnThink = document.getElementById('btnThink');
+const btnYes = document.getElementById('btnYes');
+const thinkLines = [
+  "pakka sochna hai? 🥲",
+  "canteen treat bhi included hai 🍕",
+  "acha yes button bara kar deta hoon 😤",
+  "ok ab yeh button resign kar raha hai 🫡"
+];
+let thinkTaps = 0;
+btnThink.addEventListener('click', ()=>{
+  if(thinkTaps < thinkLines.length){
+    btnThink.textContent = thinkLines[thinkTaps];
+  }
+  thinkTaps++;
+  if(thinkTaps === 3) btnYes.classList.add('grow1');
+  if(thinkTaps >= 4){
+    btnYes.classList.remove('grow1');
+    btnYes.classList.add('grow2');
+    btnThink.style.opacity = '.4';
+    btnThink.disabled = true;
+  }
+});
+
+/* ---------- CONFETTI ---------- */
+const canvas = document.getElementById('confettiCanvas');
+const ctx = canvas.getContext('2d');
+function fit(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+fit(); addEventListener('resize', fit);
+let pieces = [];
+const COLORS = ['#FF6B8A','#FFC94D','#7BD8B0','#8A7AA8','#FFFFFF','#E94F72'];
+function burst(){
+  for(let i=0;i<160;i++){
+    pieces.push({
+      x: Math.random()*canvas.width,
+      y: -20 - Math.random()*canvas.height*0.5,
+      w: 6+Math.random()*6,
+      h: 8+Math.random()*8,
+      c: COLORS[(Math.random()*COLORS.length)|0],
+      vy: 2+Math.random()*3.5,
+      vx: -1.5+Math.random()*3,
+      rot: Math.random()*Math.PI,
+      vr: -0.1+Math.random()*0.2
+    });
+  }
+  if(!confettiRunning){ confettiRunning = true; requestAnimationFrame(tick); }
+}
+let confettiRunning = false;
+function tick(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pieces.forEach(p=>{
+    p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+    ctx.save();
+    ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+    ctx.fillStyle = p.c;
+    ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+    ctx.restore();
+  });
+  pieces = pieces.filter(p=>p.y < canvas.height+30);
+  if(pieces.length){ requestAnimationFrame(tick); }
+  else { confettiRunning = false; ctx.clearRect(0,0,canvas.width,canvas.height); }
+}
+
+/* ---------- YES = FORGIVEN ---------- */
+btnYes.addEventListener('click', ()=>{
+  document.getElementById('forgiveCard').style.display = 'none';
+  document.getElementById('success').classList.add('show');
+  burst();
+  setTimeout(burst, 700);
+  document.getElementById('success').scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>
+</body>
+</html>
